@@ -13,12 +13,13 @@ class MinesweeperGUI:
         self.right_button_pressed = False
         self.mine_counter = self.game.num_mines
         self.counter_label = tk.Label(self.master, text=f"Mines: {self.mine_counter}")
+        self.counter_label.grid(row=0, column=0, columnspan=self.game.width)
 
     def create_widgets(self):
         for y in range(self.game.height):
             for x in range(self.game.width):
                 button = tk.Button(self.master, width=2, height=1)
-                button.grid(row=y+2, column=x)  # Adjust row if needed
+                button.grid(row=y+1, column=x)  # Adjust row if needed
 
                 # Bind left button events
                 button.bind('<ButtonPress-1>', lambda event, x=x, y=y: self.on_left_button_press(event, x, y))
