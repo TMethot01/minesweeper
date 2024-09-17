@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import messagebox
 from .game import Minesweeper
 
+flag_list = []
+bomb_list = []
+
 class MinesweeperGUI:
     def __init__(self, master, width=9, height=9, mines=10):
         self.master = master
@@ -14,6 +17,11 @@ class MinesweeperGUI:
         self.mine_counter = self.game.num_mines
         self.counter_label = tk.Label(self.master, text=f"Mines: {self.mine_counter}")
         self.counter_label.grid(row=0, column=0, columnspan=self.game.width)
+        self.flag_image = tk.PhotoImage(file="assets/flag2.png", width=20, height=20)
+        flag_list.append(self.flag_image)
+        self.bomb_image = tk.PhotoImage(file="assets/bomb2.png", width=20, height=20)
+        bomb_list.append(self.bomb_image)
+
 
     def create_widgets(self):
         for y in range(self.game.height):
@@ -78,11 +86,11 @@ class MinesweeperGUI:
         button = self.buttons[y][x]
         if cell.is_revealed:
             if cell.is_mine:
-                button.config(text="*", bg="red")
+                button.config(image=self.bomb_image)
             else:
                 button.config(text=str(cell.adjacent_mines) if cell.adjacent_mines > 0 else '', bg="light grey", relief=tk.SUNKEN)
         elif cell.is_flagged:
-            button.config(text="F", bg="yellow")
+            button.config(image=self.flag_image, width=18, height=18)
         else:
             button.config(text='', bg="SystemButtonFace")
 
@@ -92,4 +100,4 @@ class MinesweeperGUI:
                 cell = self.game.grid[y][x]
                 if cell.is_mine:
                     button = self.buttons[y][x]
-                    button.config(text="*", bg="red")
+                    button.config(image=self.bomb_image)
